@@ -91,4 +91,5 @@ No modules.
 | <a name="output_rds_cluster_port"></a> [rds\_cluster\_port](#output\_rds\_cluster\_port) | Database Port for Aurora Cluster |
 | <a name="output_rds_instance_endpoint"></a> [rds\_instance\_endpoint](#output\_rds\_instance\_endpoint) | RDS Database Instance Endpoint |
 | <a name="output_rds_instance_port"></a> [rds\_instance\_port](#output\_rds\_instance\_port) | Database Port for single instance |
+| <a name="output_rds_username"></a> [rds\_username](#output\_rds\_username) | Database username |
 | <a name="output_secrets_manager_id"></a> [secrets\_manager\_id](#output\_secrets\_manager\_id) | ID of AWS SecretsManager used to store DB password. Valid key to retrieve password value is `password` |

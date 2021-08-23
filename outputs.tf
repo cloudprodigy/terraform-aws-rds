@@ -22,3 +22,8 @@ output "secrets_manager_id" {
   value       = aws_secretsmanager_secret.sm.id
   description = "ID of AWS SecretsManager used to store DB password. Valid key to retrieve password value is `password`"
 }
+
+output "rds_username" {
+  description = "Database username"
+  value       = var.username
+}
