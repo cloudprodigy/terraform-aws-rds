@@ -47,11 +47,6 @@ resource "aws_rds_cluster" "default" {
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.default[0].id
 
   tags = local.common_tags
-
-  lifecycle {
-    ignore_changes = all
-  }
-
 }
 
 
@@ -70,7 +65,7 @@ resource "aws_rds_cluster_instance" "default" {
   apply_immediately            = var.apply_immediately
   monitoring_interval          = var.monitoring_interval
   monitoring_role_arn          = aws_iam_role.rds_enhanced_monitoring.arn
-  auto_minor_version_upgrade   = true
+  auto_minor_version_upgrade   = false
   performance_insights_enabled = var.performance_insights_enabled
 
 
@@ -84,6 +79,7 @@ resource "aws_db_instance" "default" {
   name                         = var.database_name
   engine                       = local.engine
   engine_version               = local.engine_version
+  auto_minor_version_upgrade   = false
   instance_class               = var.instance_type
   identifier                   = local.identifier
   vpc_security_group_ids       = [aws_security_group.rds.id]
