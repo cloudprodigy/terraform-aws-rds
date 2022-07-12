@@ -79,7 +79,7 @@ resource "aws_db_instance" "default" {
   username                   = var.username
   password                   = jsondecode(aws_secretsmanager_secret_version.sm_ver.secret_string)["password"]
   port                       = local.port
-  allocated_storage          = var.storage == null ? var.storage_type == "iops" ? "100" : "50" : var.storage
+  allocated_storage          = var.storage
   max_allocated_storage      = local.engine == "sqlserver-se" || local.engine == "sqlserver-ee" ? var.max_allocated_storage == null ? 0 : var.max_allocated_storage : null
   publicly_accessible        = false
 
