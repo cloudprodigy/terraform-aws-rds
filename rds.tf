@@ -67,9 +67,9 @@ resource "aws_rds_cluster_instance" "default" {
 }
 
 resource "aws_db_instance" "default" {
-  count = local.engine == "sqlserver-ee" || local.engine == "sqlserver-se" || local.engine == "mariadb" || local.engine == "postgres" || local.engine == "mysql" ? 1 : 0
+  count = local.engine == "sqlserver-ex" || local.engine == "sqlserver-se" || local.engine == "mariadb" || local.engine == "postgres" || local.engine == "mysql" ? 1 : 0
 
-  db_name                    = local.engine == "sqlserver-se" || local.engine == "sqlserver-ee" ? null : var.database_name
+  db_name                    = local.engine == "sqlserver-se" || local.engine == "sqlserver-ex" ? null : var.database_name
   engine                     = local.engine
   engine_version             = local.engine_version
   auto_minor_version_upgrade = false
@@ -80,15 +80,15 @@ resource "aws_db_instance" "default" {
   password                   = jsondecode(aws_secretsmanager_secret_version.sm_ver.secret_string)["password"]
   port                       = local.port
   allocated_storage          = var.storage
-  max_allocated_storage      = local.engine == "sqlserver-se" || local.engine == "sqlserver-ee" ? var.max_allocated_storage == null ? 0 : var.max_allocated_storage : null
+  max_allocated_storage      = local.engine == "sqlserver-se" || local.engine == "sqlserver-ex" ? var.max_allocated_storage == null ? 0 : var.max_allocated_storage : null
   publicly_accessible        = false
 
-  character_set_name = local.engine == "sqlserver-se" || local.engine == "sqlserver-ee" ? "SQL_Latin1_General_CP1_CI_AS" : null
-  license_model      = local.engine == "sqlserver-se" || local.engine == "sqlserver-ee" ? "license-included" : null
+  character_set_name = local.engine == "sqlserver-se" || local.engine == "sqlserver-ex" ? "SQL_Latin1_General_CP1_CI_AS" : null
+  license_model      = local.engine == "sqlserver-se" || local.engine == "sqlserver-ex" ? "license-included" : null
 
   parameter_group_name = aws_db_parameter_group.default.id
   db_subnet_group_name = aws_db_subnet_group.default.name
-  option_group_name    = local.engine == "sqlserver-se" || local.engine == "sqlserver-ee" ? var.option_group_name == "" ? concat(aws_db_option_group.this.*.id, [""])[0] : var.option_group_name : null
+  option_group_name    = local.engine == "sqlserver-se" || local.engine == "sqlserver-ex" ? var.option_group_name == "" ? concat(aws_db_option_group.this.*.id, [""])[0] : var.option_group_name : null
 
   multi_az                     = var.is_multi_az
   backup_retention_period      = var.backup_retention_period

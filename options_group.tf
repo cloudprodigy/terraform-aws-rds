@@ -1,6 +1,6 @@
 # Custom DB options created for SQL Server engine if `option_group_name` variable is empty.
 resource "aws_db_option_group" "this" {
-  count = local.engine == "sqlserver-se" || local.engine == "sqlserver-ee" && var.option_group_name == "" ? 1 : 0
+  count = local.engine == "sqlserver-se" || local.engine == "sqlserver-ex" && var.option_group_name == "" ? 1 : 0
 
   name                     = local.option_group_name
   option_group_description = "DB options group for ${local.engine}"

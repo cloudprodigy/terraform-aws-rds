@@ -212,7 +212,7 @@ variable "db_parameters" {
 
 variable "db_family" {
   type        = string
-  default     = "mysql5.7" //sqlserver-ee-15.0
+  default     = "mysql5.7" //sqlserver-ex-15.0
   description = "The family of the DB parameter group."
 }
 
