@@ -1,10 +1,3 @@
-locals {
-  port           = var.port == "" ? var.engine == "aurora-postgresql" || var.engine == "postgresql" ? "5432" : "3306" : var.port
-  identifier     = "${var.app_name}-${var.environment}"
-  engine         = var.engine == "" ? "mysql" : var.engine
-  engine_version = var.engine_version == "" ? "5.7" : var.engine_version
-}
-
 resource "aws_db_subnet_group" "default" {
   name        = lower(var.app_name)
   description = format("For Database %s", local.identifier)
@@ -27,7 +20,7 @@ resource "aws_rds_cluster" "default" {
   engine                          = local.engine
   engine_version                  = local.engine_version
   engine_mode                     = var.engine_mode
-  kms_key_id                      = var.kms_key_arn
+  kms_key_id                      = local.kms_key_id
   database_name                   = var.database_name
   master_username                 = var.username
   master_password                 = jsondecode(aws_secretsmanager_secret_version.sm_ver.secret_string)["password"]
@@ -74,32 +67,41 @@ resource "aws_rds_cluster_instance" "default" {
 }
 
 resource "aws_db_instance" "default" {
-  count = local.engine == "mariadb" || local.engine == "postgres" || local.engine == "mysql" ? 1 : 0
+  count = local.engine == "sqlserver-ee" || local.engine == "sqlserver-se" || local.engine == "mariadb" || local.engine == "postgres" || local.engine == "mysql" ? 1 : 0
 
-  name                         = var.database_name
-  engine                       = local.engine
-  engine_version               = local.engine_version
-  auto_minor_version_upgrade   = false
-  instance_class               = var.instance_type
-  identifier                   = local.identifier
-  vpc_security_group_ids       = [aws_security_group.rds.id]
-  username                     = var.username
-  password                     = jsondecode(aws_secretsmanager_secret_version.sm_ver.secret_string)["password"]
-  port                         = local.port
-  allocated_storage            = var.storage == "" ? var.storage_type == "iops" ? "100" : "50" : var.storage
-  publicly_accessible          = false
-  parameter_group_name         = aws_db_parameter_group.default.id
-  db_subnet_group_name         = aws_db_subnet_group.default.name
+  db_name                    = local.engine == "sqlserver-se" || local.engine == "sqlserver-ee" ? null : var.database_name
+  engine                     = local.engine
+  engine_version             = local.engine_version
+  auto_minor_version_upgrade = false
+  instance_class             = var.instance_type
+  identifier                 = local.identifier
+  vpc_security_group_ids     = [aws_security_group.rds.id]
+  username                   = var.username
+  password                   = jsondecode(aws_secretsmanager_secret_version.sm_ver.secret_string)["password"]
+  port                       = local.port
+  allocated_storage          = var.storage == null ? var.storage_type == "iops" ? "100" : "50" : var.storage
+  max_allocated_storage      = local.engine == "sqlserver-se" || local.engine == "sqlserver-ee" ? var.max_allocated_storage == null ? 0 : var.max_allocated_storage : null
+  publicly_accessible        = false
+
+  character_set_name = local.engine == "sqlserver-se" || local.engine == "sqlserver-ee" ? "SQL_Latin1_General_CP1_CI_AS" : null
+  license_model      = local.engine == "sqlserver-se" || local.engine == "sqlserver-ee" ? "license-included" : null
+
+  parameter_group_name = aws_db_parameter_group.default.id
+  db_subnet_group_name = aws_db_subnet_group.default.name
+  option_group_name    = local.engine == "sqlserver-se" || local.engine == "sqlserver-ee" ? var.option_group_name == "" ? concat(aws_db_option_group.this.*.id, [""])[0] : var.option_group_name : null
+
   multi_az                     = var.is_multi_az
   backup_retention_period      = var.backup_retention_period
-  monitoring_interval          = var.monitoring_interval
-  monitoring_role_arn          = aws_iam_role.rds_enhanced_monitoring.arn
+  monitoring_interval          = var.monitoring_interval == null ? 0 : var.monitoring_interval
+  monitoring_role_arn          = var.monitoring_interval != null ? concat(aws_iam_role.rds_enhanced_monitoring.*.arn, [""])[0] : null
   storage_encrypted            = true
-  kms_key_id                   = var.kms_key_arn
+  kms_key_id                   = local.kms_key_id
   final_snapshot_identifier    = format("%s-%s-%s", var.final_snapshot_identifier_prefix, local.identifier, random_id.snapshot_identifier.hex)
   storage_type                 = var.storage_type
   iops                         = var.storage_type == "iops" ? var.iops == "" ? "3000" : var.iops : 0
   performance_insights_enabled = var.performance_insights_enabled
+  skip_final_snapshot          = var.skip_final_snapshot
+  copy_tags_to_snapshot        = true
 
   tags = local.common_tags
   lifecycle {
@@ -107,22 +109,6 @@ resource "aws_db_instance" "default" {
       password
     ]
   }
-}
-
-resource "aws_db_parameter_group" "default" {
-  name        = lower(var.app_name)
-  family      = var.db_family
-  description = format("Parameter group for %s", local.identifier)
-
-  tags = local.common_tags
-}
-
-resource "aws_rds_cluster_parameter_group" "default" {
-  count       = local.engine == "aurora-postgresql" || local.engine == "aurora-mysql" ? 1 : 0
-  name_prefix = var.app_name
-  family      = var.db_family
-
-  tags = local.common_tags
 }
 
 resource "aws_appautoscaling_target" "read_replica_count" {
