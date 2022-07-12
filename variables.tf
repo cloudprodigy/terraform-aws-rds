@@ -9,10 +9,16 @@ variable "environment" {
   type        = string
 }
 
-variable "kms_key_arn" {
+variable "kms_key_id" {
   description = "RDS Encryption key"
   type        = string
+  default     = ""
+}
 
+variable "enable_encryption" {
+  description = "Whether or not to enable database encryption"
+  type        = bool
+  default     = true
 }
 variable "ingress_security_group_ids" {
   description = "Allowed Security Groups for RDS incoming traffic"
@@ -197,11 +203,35 @@ variable "enabled_cloudwatch_logs_exports" {
   description = "List of log types to export to cloudwatch. If omitted, no logs will be exported. The following log types are supported: audit, error, general, slowquery, postgresql (PostgreSQL)."
 }
 
+variable "db_parameters" {
+  type        = list(map(string))
+  description = "List of custom parameters for parameter group"
+  default     = []
+
+}
 
 variable "db_family" {
   type        = string
-  default     = "mysql5.7"
+  default     = "mysql5.7" //sqlserver-ee-15.0
   description = "The family of the DB parameter group."
+}
+
+variable "db_options" {
+  type        = any
+  default     = []
+  description = "DB Options"
+}
+
+variable "major_engine_version" {
+  type        = number
+  default     = 15
+  description = "Major engine version for options group"
+}
+
+variable "option_group_name" {
+  type        = string
+  default     = ""
+  description = "DB option group name"
 }
 
 variable "storage" {
@@ -209,6 +239,12 @@ variable "storage" {
   description = "Storage in GB for non-aurora database engines"
   default     = ""
 
+}
+
+variable "max_allocated_storage" {
+  type        = number
+  description = "Set it to higher than storage to enable autoscaling"
+  default     = null
 }
 
 variable "storage_type" {
@@ -226,7 +262,7 @@ variable "iops" {
 variable "is_multi_az" {
   type        = bool
   description = "Whether RDS will be deployed into Multi-AZ or not"
-  default     = true
+  default     = false
 }
 
 
