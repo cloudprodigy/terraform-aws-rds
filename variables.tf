@@ -252,12 +252,6 @@ variable "storage_type" {
   description = "Storage type for non-aurora database engines (gp2|iops)"
   default     = ""
 }
-
-variable "storage_encrypted" {
-  type        = bool
-  default     = true
-  description = "Enable encryption at rest. SQL Server Express edition does not support it."
-}
 variable "iops" {
   type        = string
   description = "The amount of provisioned IOPS, if `storage_type` is `iops`"

@@ -87,7 +87,6 @@ No modules.
 | <a name="input_skip_final_snapshot"></a> [skip\_final\_snapshot](#input\_skip\_final\_snapshot) | Should a final snapshot be created on cluster destroy. | `bool` | `false` | no |
 | <a name="input_snapshot_identifier"></a> [snapshot\_identifier](#input\_snapshot\_identifier) | DB snapshot to create this database from. | `string` | `""` | no |
 | <a name="input_storage"></a> [storage](#input\_storage) | Storage in GB for non-aurora database engines | `number` | `null` | no |
-| <a name="input_storage_encrypted"></a> [storage\_encrypted](#input\_storage\_encrypted) | Enable encryption at rest. SQL Server Express edition does not support it. | `bool` | `true` | no |
 | <a name="input_storage_type"></a> [storage\_type](#input\_storage\_type) | Storage type for non-aurora database engines (gp2\|iops) | `string` | `""` | no |
 | <a name="input_username"></a> [username](#input\_username) | Master DB username. | `string` | `""` | no |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | VPC CIDR Block | `string` | n/a | yes |
