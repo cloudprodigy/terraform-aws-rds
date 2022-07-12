@@ -66,7 +66,7 @@ No modules.
 | <a name="input_iops"></a> [iops](#input\_iops) | The amount of provisioned IOPS, if `storage_type` is `iops` | `string` | `""` | no |
 | <a name="input_is_multi_az"></a> [is\_multi\_az](#input\_is\_multi\_az) | Whether RDS will be deployed into Multi-AZ or not | `bool` | `false` | no |
 | <a name="input_kms_key_id"></a> [kms\_key\_id](#input\_kms\_key\_id) | RDS Encryption key | `string` | `""` | no |
-| <a name="input_major_engine_version"></a> [major\_engine\_version](#input\_major\_engine\_version) | Major engine version for options group | `number` | `15` | no |
+| <a name="input_major_engine_version"></a> [major\_engine\_version](#input\_major\_engine\_version) | Major engine version for options group | `string` | `""` | no |
 | <a name="input_max_allocated_storage"></a> [max\_allocated\_storage](#input\_max\_allocated\_storage) | Set it to higher than storage to enable autoscaling | `number` | `null` | no |
 | <a name="input_monitoring_interval"></a> [monitoring\_interval](#input\_monitoring\_interval) | The interval (seconds) between points when Enhanced Monitoring metrics are collected. | `string` | `"5"` | no |
 | <a name="input_option_group_name"></a> [option\_group\_name](#input\_option\_group\_name) | DB option group name | `string` | `""` | no |

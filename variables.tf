@@ -223,8 +223,8 @@ variable "db_options" {
 }
 
 variable "major_engine_version" {
-  type        = number
-  default     = 15
+  type        = string
+  default     = ""
   description = "Major engine version for options group"
 }
 
