@@ -253,6 +253,11 @@ variable "storage_type" {
   default     = ""
 }
 
+variable "storage_encrypted" {
+  type        = bool
+  default     = true
+  description = "Enable encryption at rest. SQL Server Express edition does not support it."
+}
 variable "iops" {
   type        = string
   description = "The amount of provisioned IOPS, if `storage_type` is `iops`"

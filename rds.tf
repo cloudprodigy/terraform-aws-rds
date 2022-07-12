@@ -94,7 +94,7 @@ resource "aws_db_instance" "default" {
   backup_retention_period      = var.backup_retention_period
   monitoring_interval          = var.monitoring_interval == null ? 0 : var.monitoring_interval
   monitoring_role_arn          = var.monitoring_interval != null ? concat(aws_iam_role.rds_enhanced_monitoring.*.arn, [""])[0] : null
-  storage_encrypted            = true
+  storage_encrypted            = var.storage_encrypted
   kms_key_id                   = local.kms_key_id
   final_snapshot_identifier    = format("%s-%s-%s", var.final_snapshot_identifier_prefix, local.identifier, random_id.snapshot_identifier.hex)
   storage_type                 = var.storage_type
