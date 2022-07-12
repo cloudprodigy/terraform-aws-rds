@@ -235,9 +235,9 @@ variable "option_group_name" {
 }
 
 variable "storage" {
-  type        = string
+  type        = number
   description = "Storage in GB for non-aurora database engines"
-  default     = ""
+  default     = null
 
 }
 
