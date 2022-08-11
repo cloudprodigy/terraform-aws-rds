@@ -1,4 +1,4 @@
-all: format init validate lint secure documentation
+all: format init validate documentation
 
 AWS_DEFAULT_REGION ?= us-east-1
 

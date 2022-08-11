@@ -114,8 +114,8 @@ variable "apply_immediately" {
 }
 
 variable "monitoring_interval" {
-  type        = string
-  default     = "5"
+  type        = number
+  default     = 5
   description = "The interval (seconds) between points when Enhanced Monitoring metrics are collected."
 }
 
@@ -249,7 +249,7 @@ variable "max_allocated_storage" {
 
 variable "storage_type" {
   type        = string
-  description = "Storage type for non-aurora database engines (gp2|iops)"
+  description = "Storage type for non-aurora database engines (gp2|io1)"
   default     = ""
 }
 variable "iops" {

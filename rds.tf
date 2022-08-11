@@ -56,8 +56,8 @@ resource "aws_rds_cluster_instance" "default" {
   db_parameter_group_name      = aws_db_parameter_group.default.id
   preferred_maintenance_window = var.preferred_maintenance_window
   apply_immediately            = var.apply_immediately
-  monitoring_interval          = var.monitoring_interval
-  monitoring_role_arn          = aws_iam_role.rds_enhanced_monitoring.arn
+  monitoring_interval          = var.monitoring_interval != null ? var.monitoring_interval : 0
+  monitoring_role_arn          = var.monitoring_interval != null ? concat(aws_iam_role.rds_enhanced_monitoring.*.arn, [""])[0] : null
   auto_minor_version_upgrade   = false
   performance_insights_enabled = var.performance_insights_enabled
 
@@ -92,13 +92,13 @@ resource "aws_db_instance" "default" {
 
   multi_az                     = var.is_multi_az
   backup_retention_period      = var.backup_retention_period
-  monitoring_interval          = var.monitoring_interval == null ? 0 : var.monitoring_interval
+  monitoring_interval          = var.monitoring_interval != null ? var.monitoring_interval : 0
   monitoring_role_arn          = var.monitoring_interval != null ? concat(aws_iam_role.rds_enhanced_monitoring.*.arn, [""])[0] : null
   storage_encrypted            = var.enable_encryption ? true : false
   kms_key_id                   = local.kms_key_id
   final_snapshot_identifier    = format("%s-%s-%s", var.final_snapshot_identifier_prefix, local.identifier, random_id.snapshot_identifier.hex)
   storage_type                 = var.storage_type
-  iops                         = var.storage_type == "iops" ? var.iops == "" ? "3000" : var.iops : 0
+  iops                         = var.storage_type == "io1" ? var.iops == "" ? "3000" : var.iops : 0
   performance_insights_enabled = var.performance_insights_enabled
   skip_final_snapshot          = var.skip_final_snapshot
   copy_tags_to_snapshot        = true
