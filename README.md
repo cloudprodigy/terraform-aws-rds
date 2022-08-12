@@ -98,6 +98,7 @@ No modules.
 |------|-------------|
 | <a name="output_rds_cluster_endpoint"></a> [rds\_cluster\_endpoint](#output\_rds\_cluster\_endpoint) | RDS Cluster Endpoint |
 | <a name="output_rds_cluster_port"></a> [rds\_cluster\_port](#output\_rds\_cluster\_port) | Database Port for Aurora Cluster |
+| <a name="output_rds_instance_address"></a> [rds\_instance\_address](#output\_rds\_instance\_address) | RDS Database Instance Address |
 | <a name="output_rds_instance_endpoint"></a> [rds\_instance\_endpoint](#output\_rds\_instance\_endpoint) | RDS Database Instance Endpoint |
 | <a name="output_rds_instance_port"></a> [rds\_instance\_port](#output\_rds\_instance\_port) | Database Port for single instance |
 | <a name="output_rds_username"></a> [rds\_username](#output\_rds\_username) | Database username |
