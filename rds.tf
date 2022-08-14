@@ -82,6 +82,7 @@ resource "aws_db_instance" "default" {
   allocated_storage          = var.storage
   max_allocated_storage      = local.engine == "sqlserver-se" || local.engine == "sqlserver-ex" ? var.max_allocated_storage == null ? 0 : var.max_allocated_storage : null
   publicly_accessible        = false
+  apply_immediately          = var.apply_immediately
 
   character_set_name = local.engine == "sqlserver-se" || local.engine == "sqlserver-ex" ? "SQL_Latin1_General_CP1_CI_AS" : null
   license_model      = local.engine == "sqlserver-se" || local.engine == "sqlserver-ex" ? "license-included" : null
