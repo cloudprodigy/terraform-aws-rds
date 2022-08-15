@@ -57,7 +57,7 @@ resource "aws_rds_cluster_instance" "default" {
   preferred_maintenance_window = var.preferred_maintenance_window
   apply_immediately            = var.apply_immediately
   monitoring_interval          = var.monitoring_interval != null ? var.monitoring_interval : 0
-  monitoring_role_arn          = var.monitoring_interval != null ? concat(aws_iam_role.rds_enhanced_monitoring.*.arn, [""])[0] : null
+  monitoring_role_arn          = var.monitoring_interval > 0 ? concat(aws_iam_role.rds_enhanced_monitoring.*.arn, [""])[0] : null
   auto_minor_version_upgrade   = false
   performance_insights_enabled = var.performance_insights_enabled
 
