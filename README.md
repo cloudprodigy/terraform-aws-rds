@@ -49,6 +49,7 @@ No modules.
 | <a name="input_app_name"></a> [app\_name](#input\_app\_name) | Application Name | `string` | n/a | yes |
 | <a name="input_apply_immediately"></a> [apply\_immediately](#input\_apply\_immediately) | Determines whether or not any DB modifications are applied immediately, or during the maintenance window. | `bool` | `false` | no |
 | <a name="input_backup_retention_period"></a> [backup\_retention\_period](#input\_backup\_retention\_period) | How long to keep backups for (in days). | `number` | `14` | no |
+| <a name="input_cluster_db_parameters"></a> [cluster\_db\_parameters](#input\_cluster\_db\_parameters) | List of custom parameters for parameter group | `list(map(string))` | `[]` | no |
 | <a name="input_database_name"></a> [database\_name](#input\_database\_name) | Name for an automatically created database on cluster creation. | `string` | `""` | no |
 | <a name="input_db_family"></a> [db\_family](#input\_db\_family) | The family of the DB parameter group. | `string` | `"mysql5.7"` | no |
 | <a name="input_db_options"></a> [db\_options](#input\_db\_options) | DB Options | `any` | `[]` | no |

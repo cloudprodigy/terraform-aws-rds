@@ -210,6 +210,13 @@ variable "db_parameters" {
 
 }
 
+variable "cluster_db_parameters" {
+  type        = list(map(string))
+  description = "List of custom parameters for parameter group"
+  default     = []
+
+}
+
 variable "db_family" {
   type        = string
   default     = "mysql5.7" //sqlserver-ex-15.0
