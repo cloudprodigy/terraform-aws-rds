@@ -40,6 +40,14 @@ resource "aws_rds_cluster" "default" {
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.default[0].id
 
   tags = local.common_tags
+  lifecycle {
+    ignore_changes = [
+      master_password
+    ]
+  }
+  depends_on = [
+    aws_rds_cluster_parameter_group.default
+  ]
 }
 
 
@@ -61,6 +69,9 @@ resource "aws_rds_cluster_instance" "default" {
   auto_minor_version_upgrade   = false
   performance_insights_enabled = var.performance_insights_enabled
 
+  depends_on = [
+    aws_db_parameter_group.default
+  ]
 
   tags = local.common_tags
 
@@ -104,12 +115,16 @@ resource "aws_db_instance" "default" {
   skip_final_snapshot          = var.skip_final_snapshot
   copy_tags_to_snapshot        = true
 
+  depends_on = [
+    aws_db_parameter_group.default
+  ]
   tags = local.common_tags
   lifecycle {
     ignore_changes = [
       password
     ]
   }
+
 }
 
 resource "aws_appautoscaling_target" "read_replica_count" {
