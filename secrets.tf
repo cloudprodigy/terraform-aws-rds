@@ -5,9 +5,8 @@ locals {
 }
 
 resource "aws_secretsmanager_secret" "sm" {
-  #name = "${var.app_name}-rds-secret"
-  name_prefix = var.app_name
-  tags        = local.common_tags #tfsec:ignore:AWS095
+  name = "${var.app_name}-rds-secret"
+  tags = local.common_tags #tfsec:ignore:AWS095
 }
 
 resource "aws_secretsmanager_secret_version" "sm_ver" {
