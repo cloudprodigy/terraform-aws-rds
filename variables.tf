@@ -271,6 +271,17 @@ variable "is_multi_az" {
   default     = false
 }
 
+variable "serverless_max_capacity" {
+  type        = number
+  description = "Max ACU for serverless aurora"
+  default     = 6
+}
+
+variable "serverless_min_capacity" {
+  type        = number
+  description = "Min ACU for serverless aurora"
+  default     = 4
+}
 
 locals {
   common_tags = {

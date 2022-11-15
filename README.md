@@ -85,6 +85,8 @@ No modules.
 | <a name="input_replica_scale_max"></a> [replica\_scale\_max](#input\_replica\_scale\_max) | Maximum number of replicas to allow scaling. | `number` | `0` | no |
 | <a name="input_replica_scale_min"></a> [replica\_scale\_min](#input\_replica\_scale\_min) | Minimum number of replicas to allow scaling. | `number` | `2` | no |
 | <a name="input_replica_scale_out_cooldown"></a> [replica\_scale\_out\_cooldown](#input\_replica\_scale\_out\_cooldown) | Cooldown in seconds before allowing further scaling operations after a scale out. | `number` | `300` | no |
+| <a name="input_serverless_max_capacity"></a> [serverless\_max\_capacity](#input\_serverless\_max\_capacity) | Max ACU for serverless aurora | `number` | `6` | no |
+| <a name="input_serverless_min_capacity"></a> [serverless\_min\_capacity](#input\_serverless\_min\_capacity) | Min ACU for serverless aurora | `number` | `4` | no |
 | <a name="input_skip_final_snapshot"></a> [skip\_final\_snapshot](#input\_skip\_final\_snapshot) | Should a final snapshot be created on cluster destroy. | `bool` | `false` | no |
 | <a name="input_snapshot_identifier"></a> [snapshot\_identifier](#input\_snapshot\_identifier) | DB snapshot to create this database from. | `string` | `""` | no |
 | <a name="input_storage"></a> [storage](#input\_storage) | Storage in GB for non-aurora database engines | `number` | `null` | no |

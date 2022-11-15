@@ -40,6 +40,10 @@ resource "aws_rds_cluster" "default" {
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.default[0].id
 
   tags = local.common_tags
+  serverlessv2_scaling_configuration {
+    max_capacity = var.serverless_max_capacity
+    min_capacity = var.serverless_min_capacity
+  }
   lifecycle {
     ignore_changes = [
       master_password
