@@ -15,12 +15,10 @@ resource "aws_secretsmanager_secret_version" "sm_ver" {
 }
 
 resource "random_password" "master_password" {
-  length      = 16
-  special     = true
-  min_lower   = 1
-  min_upper   = 1
-  min_numeric = 1
-  lifecycle {
-    ignore_changes = all
-  }
+  length           = 16
+  special          = true
+  min_lower        = 1
+  min_upper        = 1
+  min_numeric      = 1
+  override_special = "!#$%&()+[]{}<>"
 }
