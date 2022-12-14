@@ -38,8 +38,8 @@ No modules.
 | [aws_secretsmanager_secret.sm](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
 | [aws_secretsmanager_secret_version.sm_ver](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
 | [aws_security_group.rds](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
-| [random_id.master_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 | [random_id.snapshot_identifier](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
+| [random_password.master_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [aws_iam_policy_document.monitoring_rds_assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
 ## Inputs
@@ -49,6 +49,7 @@ No modules.
 | <a name="input_app_name"></a> [app\_name](#input\_app\_name) | Application Name | `string` | n/a | yes |
 | <a name="input_apply_immediately"></a> [apply\_immediately](#input\_apply\_immediately) | Determines whether or not any DB modifications are applied immediately, or during the maintenance window. | `bool` | `false` | no |
 | <a name="input_backup_retention_period"></a> [backup\_retention\_period](#input\_backup\_retention\_period) | How long to keep backups for (in days). | `number` | `14` | no |
+| <a name="input_cluster_db_parameters"></a> [cluster\_db\_parameters](#input\_cluster\_db\_parameters) | List of custom parameters for parameter group | `list(map(string))` | `[]` | no |
 | <a name="input_database_name"></a> [database\_name](#input\_database\_name) | Name for an automatically created database on cluster creation. | `string` | `""` | no |
 | <a name="input_db_family"></a> [db\_family](#input\_db\_family) | The family of the DB parameter group. | `string` | `"mysql5.7"` | no |
 | <a name="input_db_options"></a> [db\_options](#input\_db\_options) | DB Options | `any` | `[]` | no |
@@ -66,9 +67,9 @@ No modules.
 | <a name="input_iops"></a> [iops](#input\_iops) | The amount of provisioned IOPS, if `storage_type` is `iops` | `string` | `""` | no |
 | <a name="input_is_multi_az"></a> [is\_multi\_az](#input\_is\_multi\_az) | Whether RDS will be deployed into Multi-AZ or not | `bool` | `false` | no |
 | <a name="input_kms_key_id"></a> [kms\_key\_id](#input\_kms\_key\_id) | RDS Encryption key | `string` | `""` | no |
-| <a name="input_major_engine_version"></a> [major\_engine\_version](#input\_major\_engine\_version) | Major engine version for options group | `number` | `15` | no |
+| <a name="input_major_engine_version"></a> [major\_engine\_version](#input\_major\_engine\_version) | Major engine version for options group | `string` | `""` | no |
 | <a name="input_max_allocated_storage"></a> [max\_allocated\_storage](#input\_max\_allocated\_storage) | Set it to higher than storage to enable autoscaling | `number` | `null` | no |
-| <a name="input_monitoring_interval"></a> [monitoring\_interval](#input\_monitoring\_interval) | The interval (seconds) between points when Enhanced Monitoring metrics are collected. | `string` | `"5"` | no |
+| <a name="input_monitoring_interval"></a> [monitoring\_interval](#input\_monitoring\_interval) | The interval (seconds) between points when Enhanced Monitoring metrics are collected. | `number` | `5` | no |
 | <a name="input_option_group_name"></a> [option\_group\_name](#input\_option\_group\_name) | DB option group name | `string` | `""` | no |
 | <a name="input_performance_insights_enabled"></a> [performance\_insights\_enabled](#input\_performance\_insights\_enabled) | Specifies whether Performance Insights is enabled or not. | `bool` | `false` | no |
 | <a name="input_port"></a> [port](#input\_port) | Database port. | `string` | `""` | no |
@@ -84,10 +85,12 @@ No modules.
 | <a name="input_replica_scale_max"></a> [replica\_scale\_max](#input\_replica\_scale\_max) | Maximum number of replicas to allow scaling. | `number` | `0` | no |
 | <a name="input_replica_scale_min"></a> [replica\_scale\_min](#input\_replica\_scale\_min) | Minimum number of replicas to allow scaling. | `number` | `2` | no |
 | <a name="input_replica_scale_out_cooldown"></a> [replica\_scale\_out\_cooldown](#input\_replica\_scale\_out\_cooldown) | Cooldown in seconds before allowing further scaling operations after a scale out. | `number` | `300` | no |
+| <a name="input_serverless_max_capacity"></a> [serverless\_max\_capacity](#input\_serverless\_max\_capacity) | Max ACU for serverless aurora | `number` | `6` | no |
+| <a name="input_serverless_min_capacity"></a> [serverless\_min\_capacity](#input\_serverless\_min\_capacity) | Min ACU for serverless aurora | `number` | `4` | no |
 | <a name="input_skip_final_snapshot"></a> [skip\_final\_snapshot](#input\_skip\_final\_snapshot) | Should a final snapshot be created on cluster destroy. | `bool` | `false` | no |
 | <a name="input_snapshot_identifier"></a> [snapshot\_identifier](#input\_snapshot\_identifier) | DB snapshot to create this database from. | `string` | `""` | no |
 | <a name="input_storage"></a> [storage](#input\_storage) | Storage in GB for non-aurora database engines | `number` | `null` | no |
-| <a name="input_storage_type"></a> [storage\_type](#input\_storage\_type) | Storage type for non-aurora database engines (gp2\|iops) | `string` | `""` | no |
+| <a name="input_storage_type"></a> [storage\_type](#input\_storage\_type) | Storage type for non-aurora database engines (gp2\|io1) | `string` | `""` | no |
 | <a name="input_username"></a> [username](#input\_username) | Master DB username. | `string` | `""` | no |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | VPC CIDR Block | `string` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC ID | `string` | n/a | yes |
@@ -98,6 +101,7 @@ No modules.
 |------|-------------|
 | <a name="output_rds_cluster_endpoint"></a> [rds\_cluster\_endpoint](#output\_rds\_cluster\_endpoint) | RDS Cluster Endpoint |
 | <a name="output_rds_cluster_port"></a> [rds\_cluster\_port](#output\_rds\_cluster\_port) | Database Port for Aurora Cluster |
+| <a name="output_rds_instance_address"></a> [rds\_instance\_address](#output\_rds\_instance\_address) | RDS Database Instance Address |
 | <a name="output_rds_instance_endpoint"></a> [rds\_instance\_endpoint](#output\_rds\_instance\_endpoint) | RDS Database Instance Endpoint |
 | <a name="output_rds_instance_port"></a> [rds\_instance\_port](#output\_rds\_instance\_port) | Database Port for single instance |
 | <a name="output_rds_username"></a> [rds\_username](#output\_rds\_username) | Database username |

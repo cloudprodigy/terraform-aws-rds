@@ -8,6 +8,11 @@ output "rds_instance_endpoint" {
   description = "RDS Database Instance Endpoint"
 }
 
+output "rds_instance_address" {
+  value       = aws_db_instance.default.*.address
+  description = "RDS Database Instance Address"
+}
+
 output "rds_cluster_port" {
   value       = aws_rds_cluster.default.*.port
   description = "Database Port for Aurora Cluster"

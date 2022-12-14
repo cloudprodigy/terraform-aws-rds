@@ -114,8 +114,8 @@ variable "apply_immediately" {
 }
 
 variable "monitoring_interval" {
-  type        = string
-  default     = "5"
+  type        = number
+  default     = 5
   description = "The interval (seconds) between points when Enhanced Monitoring metrics are collected."
 }
 
@@ -210,9 +210,16 @@ variable "db_parameters" {
 
 }
 
+variable "cluster_db_parameters" {
+  type        = list(map(string))
+  description = "List of custom parameters for parameter group"
+  default     = []
+
+}
+
 variable "db_family" {
   type        = string
-  default     = "mysql5.7" //sqlserver-ee-15.0
+  default     = "mysql5.7" //sqlserver-ex-15.0
   description = "The family of the DB parameter group."
 }
 
@@ -223,8 +230,8 @@ variable "db_options" {
 }
 
 variable "major_engine_version" {
-  type        = number
-  default     = 15
+  type        = string
+  default     = ""
   description = "Major engine version for options group"
 }
 
@@ -249,10 +256,9 @@ variable "max_allocated_storage" {
 
 variable "storage_type" {
   type        = string
-  description = "Storage type for non-aurora database engines (gp2|iops)"
+  description = "Storage type for non-aurora database engines (gp2|io1)"
   default     = ""
 }
-
 variable "iops" {
   type        = string
   description = "The amount of provisioned IOPS, if `storage_type` is `iops`"
@@ -265,6 +271,17 @@ variable "is_multi_az" {
   default     = false
 }
 
+variable "serverless_max_capacity" {
+  type        = number
+  description = "Max ACU for serverless aurora"
+  default     = 6
+}
+
+variable "serverless_min_capacity" {
+  type        = number
+  description = "Min ACU for serverless aurora"
+  default     = 4
+}
 
 locals {
   common_tags = {
